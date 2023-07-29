@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+.graph {
+    margin: 10px;
+    padding: 20px;
+    background-color: #CCCCCC;
+    border-radius: 5px;
+}
+
+.graph h2 {
+    margin-top: 0;
+}
+
+
+
+.Modal{
+    position: absolute;
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.modalContent{
+    background: white;
+    position: absolute;
+    z-index: 1;
+    padding: 1rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+}
