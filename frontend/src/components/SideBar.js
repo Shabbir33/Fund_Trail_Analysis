@@ -33,9 +33,6 @@ const SideBar = () => {
                     <MenuItem component={<Link to={`/dashboard/${accNo}`} />} >Account {accNo}</MenuItem>
                 )
             }):<></>}
-                <MenuItem component={<Link to="/documentation" />}> Documentation</MenuItem>
-                <MenuItem component={<Link to="/calendar" />}> Calendar</MenuItem>
-                <MenuItem component={<Link to="/e-commerce" />}> E-commerce</MenuItem>
             </Menu>
         </Sidebar>
     )

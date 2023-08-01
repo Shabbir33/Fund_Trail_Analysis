@@ -10,6 +10,28 @@ const store = create((set) => ({
     transactions: [],
 
 
+
+    //Navbar
+    navAnimate: false,
+    navOpen: false,
+    navDocked: true,
+    navWidth: 256,
+
+    setNavAnimate: (val) => {
+        set ({navAnimate: val})
+    },
+
+    setNavOpen: (val) => {
+        set({navOpen: val})
+        console.log(store.getState().navOpen)
+    },
+
+    setNavDocked: (val) => {
+        set({navDocked: val})
+    },
+    
+
+
     onChange: (event) => {
         const file = event.target.files[0]
         set({selectedFile: file})
@@ -59,26 +81,37 @@ const store = create((set) => ({
         try{
             const res = await axios.get(`http://127.0.0.1:5000/get-transactions/${accNo}`)
 
+            set({transactions: []})
+
+
             for(let i = 0; i < Object.keys(res.data["Transaction ID"]).length; i++){
                 set((state) => {
-                    return{
-                        transactions: [
-                            ...state.transactions,
-                            {
-                                tranID: res.data["Transaction ID"][i],
-                                accountNo: res.data["Account Number"][i],
-                                balance: res.data["Balance Amount"][i],
-                                checkNo: res.data["Check Number"][i],
-                                deposit: res.data["Deposit Amount"][i],
-                                recAccountNo: res.data["Receiver Account Number"][i],
-                                senAccountNo: res.data["Sender Account Number"][i],
-                                tranDate: res.data["Transaction Date"][i],
-                                tranDetail: res.data["Transaction Details"][i],
-                                withdrawal: res.data["Withdrawal Amount"][i]
-                            }
-                        ]
+                    let tranIDList = state.transactions !== undefined? (state?.transactions.map((tran) => {
+                        return tran["tranID"]
+                    })): [] 
+
+
+                    if(res.data["Transaction ID"][i] in (tranIDList)  === false){
+                        return{
+                            transactions: [
+                                ...state.transactions,
+                                {
+                                    tranID: res.data["Transaction ID"][i],
+                                    accountNo: res.data["Account Number"][i],
+                                    balance: res.data["Balance Amount"][i],
+                                    checkNo: res.data["Check Number"][i],
+                                    deposit: res.data["Deposit Amount"][i],
+                                    recAccountNo: res.data["Receiver Account Number"][i],
+                                    senAccountNo: res.data["Sender Account Number"][i],
+                                    tranDate: res.data["Transaction Date"][i],
+                                    tranDetail: res.data["Transaction Details"][i],
+                                    withdrawal: res.data["Withdrawal Amount"][i]
+                                }
+                            ]
+                        }
                     }
                 })
+                
             }
 
             console.log(store.getState().transactions)

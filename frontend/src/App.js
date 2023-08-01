@@ -6,25 +6,29 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import store from './stores/store';
 import SideBar from './components/SideBar'
+import SideBarTwo from "./components/SideBarTwo"
+import NavbarComp from './components/NavbarComp';
 
 
 Chart.register(CategoryScale);
 
 function App() {
-  const Store = store()
+  // const Store = store()
 
-  const accNos = Object.keys(Store.data)
-  console.log(accNos)
+  // const accNos = Object.keys(Store.data)
+  // console.log(accNos)
 
 
   return (
     <div className="App">
       <BrowserRouter>
-        <SideBar />
+      <SideBarTwo>
+      <NavbarComp />
         <Routes>
           <Route index element={<UploadData />} />
           <Route path='/dashboard/:accNo' element={<Dashboard />} />
         </Routes>
+        </SideBarTwo>
       </BrowserRouter>
     </div>
   );

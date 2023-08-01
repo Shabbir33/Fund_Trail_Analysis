@@ -24,7 +24,7 @@ const Dashboard = () => {
         Store.getWithdrawals(accNo)
         Store.getBalance(accNo)
         Store.getTransactions(accNo)
-    }, [])
+    }, [accNo])
 
     console.log("Data : ", Store.data)
     console.log(graphTranData)

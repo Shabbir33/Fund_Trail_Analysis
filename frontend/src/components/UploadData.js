@@ -3,9 +3,9 @@ import store from "../stores/store";
 
 const UploadData = () => {
     const Store = store()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
-    const accNos = Object.keys(Store.data)
+    // const accNos = Object.keys(Store.data)
 
     const onUpload = async () => {
         await Store.onUpload();
