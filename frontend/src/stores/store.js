@@ -64,7 +64,8 @@ const store = create((set) => ({
                             [accNo[i]]: {
                                 deposits: null,
                                 withdrawals: null,
-                                balance: null
+                                balance: null,
+                                ml_data: null
                             }
                         }
                     };
@@ -100,12 +101,11 @@ const store = create((set) => ({
                                     accountNo: res.data["Account Number"][i],
                                     balance: res.data["Balance Amount"][i],
                                     checkNo: res.data["Check Number"][i],
-                                    deposit: res.data["Deposit Amount"][i],
-                                    recAccountNo: res.data["Receiver Account Number"][i],
-                                    senAccountNo: res.data["Sender Account Number"][i],
+                                    secAccountNo: res.data["Second Account Number"][i],
                                     tranDate: res.data["Transaction Date"][i],
                                     tranDetail: res.data["Transaction Details"][i],
-                                    withdrawal: res.data["Withdrawal Amount"][i]
+                                    amount: res.data["Amount"][i],
+                                    type: res.data["Type"][i]
                                 }
                             ]
                         }
@@ -190,6 +190,29 @@ const store = create((set) => ({
             console.log(err)
         }
     },
+
+    getMLGraph: async (accNo) => {
+        try{
+            console.log(store.getState().data)
+            const res = await axios.get(`http://127.0.0.1:5000/ml-graph/${accNo}`)
+
+            const mlData = res.data
+            set((state) => {
+                return {
+                    data: {
+                        ...state.data,
+                        [accNo]: {
+                            ...state.data[accNo],
+                            ml_data: mlData,
+                        }
+                    }
+                };
+            });
+            console.log(store.getState().data)
+        }catch(err){
+            console.log(err)
+        }
+    }
 }))
 
 export default store

@@ -8,6 +8,8 @@ import store from './stores/store';
 import SideBar from './components/SideBar'
 import SideBarTwo from "./components/SideBarTwo"
 import NavbarComp from './components/NavbarComp';
+import GraphComponent from './components/GraphComponent';
+import FlowGraph from './components/FlowGraph';
 
 
 Chart.register(CategoryScale);
@@ -27,6 +29,7 @@ function App() {
         <Routes>
           <Route index element={<UploadData />} />
           <Route path='/dashboard/:accNo' element={<Dashboard />} />
+          <Route path='/graph/:acc' element={<GraphComponent />} />
         </Routes>
         </SideBarTwo>
       </BrowserRouter>

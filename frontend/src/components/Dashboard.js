@@ -1,11 +1,13 @@
 import "./Dashboard.css"
-import { Line } from "react-chartjs-2";
+import { Line, Scatter } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 import BarChart from "./Charts/BarChart";
 import store from "../stores/store";
 import { useRef } from 'react';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { useParams } from "react-router-dom";
+import GraphComponent from "./GraphComponent";
+import LineChart from "./Charts/LineChart";
 
 
 
@@ -18,18 +20,20 @@ const Dashboard = () => {
     const [currentID, setCurrentID] = useState(null)
     const chartRefBarDeposit = useRef();
     const chartRefBarWithDrawal = useRef();
+    const chartRefLineBalance = useRef();
 
     useEffect(() => {
         Store.getDeposits(accNo);
         Store.getWithdrawals(accNo)
         Store.getBalance(accNo)
         Store.getTransactions(accNo)
+        Store.getMLGraph(accNo)
     }, [accNo])
 
     console.log("Data : ", Store.data)
     console.log(graphTranData)
 
-    if(graphTranData === undefined || data === undefined || data.deposits === null || data.withdrawals == null || data.balance == null){
+    if(graphTranData === undefined || data === undefined || data.deposits === null || data.withdrawals == null || data.balance == null || data.ml_data == null){
         // console.log()
         // Store.getDeposits(accNo);
         // Store.getWithdrawals(accNo)
@@ -57,22 +61,26 @@ const Dashboard = () => {
     let totalBalance = totalDeposit - totalWithdrawal
     console.log(totalDeposit, totalWithdrawal, totalBalance)
 
+    const ml_data = data.ml_data["result"]
+
 
     // const fraudDepositID = '6' 
     // const fraudWithdrawalID = '18'
 
-    // const colorArr = (arr, fraudID) => {
-    //     let result = []
-    //     for(let id in arr){
-    //         if(arr[id] === fraudID){
-    //             result.push("rgba(255, 0, 0, 0.6)")
-    //         }
-    //         else{
-    //             result.push("rgba(255, 255, 255, 0.6)")
-    //         }
-    //     }
-    //     return result
-    // }
+    const colorArr = (fraudID) => {
+        console.log(fraudID)
+        let result = []
+        fraudID.forEach((id) => {
+            if(id === 1){
+                result.push("rgba(255, 0, 0, 0.6)")
+            }
+            else{
+                result.push("rgba(255, 255, 255, 0.6)")
+            }
+        })
+        console.log(result)
+        return result
+    }
 
     // console.log(Object.keys(deposits))
 
@@ -135,6 +143,25 @@ const Dashboard = () => {
         ]
     }
 
+    const chartML = {
+        labels: Object.keys(ml_data),
+        // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
+        datasets: [
+            {
+                label: 'Balance',
+                data: Object.values(ml_data),
+                // you can set indiviual colors for each bar
+                backgroundColor: colorArr(data.ml_data["svm"]),
+                // [
+                //     'rgba(255, 255, 255, 0.6)',
+                //     'rgba(255, 255, 255, 0.6)',
+                //     'rgba(255, 255, 255, 0.6)'
+                // ],
+                borderWidth: 1,
+            }
+        ]
+    }
+
 
     const onClickBar = (event, chartData, chartRefBar) => {
         if(getElementAtEvent(chartRefBar.current, event).length !== 0){
@@ -164,24 +191,25 @@ const Dashboard = () => {
                 </div>
                 <div className="graph">
                     <h2>Graph 3</h2>
-                    <Line
-                        data={chartBalance}
-                        options={{
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: "Balance"
-                                },
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }}
-                    />
+                    <LineChart data={chartBalance}
+                        chartRef={chartRefLineBalance}
+                        onClick={(event) => onClickBar(event, chartBalance, chartRefLineBalance)}
+                        title={"Balance"}
+                        />
                     <p>Total: {totalBalance}</p>
                 </div>
                 <div className="graph">
-                        
+                    <h2>Fund Flow Network</h2>
+                    <GraphComponent acc={accNo}/>
+                </div>
+                <div className="graph">
+                    <h2>Graph 4</h2>
+                    <Scatter data={chartML}
+                        // chartRef={chartRefLineBalance}
+                        // onClick={(event) => onClickBar(event, chartBalance, chartRefLineBalance)}
+                        // title={"Balance"}
+                        />
+                    <p>Total: {totalBalance}</p>
                 </div>
                 {/* <div className="conclusion graph">
                     <h2>Frauds Detected</h2>
@@ -200,10 +228,8 @@ const Dashboard = () => {
                     <div className="modalContent">
                         <p>Transaction ID: {tran.tranID}</p>
                         <p>Account Number: {tran.accNo}</p>
-                        {tran.recAccountNo === 0? <p /> :<p>Receiver Account Number: {tran.recAccountNo}</p>}
-                        <p>Sender Account Number: {tran.senAccountNo}</p>
-                        <p>Deposit Ammount: {tran.deposit}</p>
-                        <p>Withdrawal Ammount: {tran.withdrawal}</p>
+                        {tran.secAccountNo === 0? <p /> :<p>Second Account Number: {tran.secAccountNo}</p>}
+                        <p>Ammount: {tran.amount}</p>
                         <p>Account Balance: {tran.balance}</p>
                         <button onClick={() => setOpen(false)}>Close</button>
                     </div>
