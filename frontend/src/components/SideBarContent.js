@@ -31,7 +31,7 @@ const SideBarContent = () => {
       >
           {accNos.length > 0 ?(
             accNos.map((accNo) => {
-              return <li key={accNo}><Link to={`/dashboard/${accNo}`}>Account {accNo}</Link></li>;
+              return <li style={{backgroundColor:"#BEBEBE", borderRadius: "5px", marginBottom:"5px", padding:"5px", marginRight:"5px", borderWidth:"2px"}} key={accNo}><Link to={`/dashboard/${accNo}`}>Account {accNo}</Link></li>;
             })
           ) : (
             <></>

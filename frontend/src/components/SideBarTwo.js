@@ -5,8 +5,8 @@ import store from "../stores/store";
 import SidebarContent from "./SideBarContent"
 
 const SideBarTwo = ({ children }) => {
-  const Store = store()
-  
+
+  const Store = store();
   
   const navAnimate = Store.navAnimate
   const setNavAnimate = Store.setNavAnimate

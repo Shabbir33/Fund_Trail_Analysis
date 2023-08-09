@@ -26,6 +26,8 @@ from tensorflow.keras.layers import Input, Dense
 
 import tensorflow as tf
 
+from dash_for_integration import *
+
 
 
 def scale_data(df):
@@ -191,7 +193,7 @@ def extractData(file, filename):
     df = pd.DataFrame()
 
     if (ext == ".csv"):
-        df = pd.read_csv(file)
+        df = pd.read_csv(filename, sep=',')
     elif (ext == ".xlsx" or ext == ".xlsm"):
         # df = pd.DataFrame(openpyxl.load_workbook(filePath).active)
         df = pd.read_excel(file, engine='openpyxl')
@@ -333,6 +335,8 @@ def hello():
 @app.route('/upload_csv', methods=['POST'])
 @cross_origin(origins="*", supports_credentials=True)
 def csv_handler():
+    csv = 'financial_data.csv'
+    execute(csv)
     f = request.files['file']
     fname = f.filename 
     f.save(f.filename)
@@ -417,11 +421,34 @@ def balance_amount(accNo):
 @app.route('/get-transactions/<accNo>', methods=['GET'])
 @cross_origin(origins="*", supports_credentials=True,)
 def get_transactions(accNo):
+    # accTranData = accTran.find({})
+    # print("accTran Data: ", accTranData)
     txid = accTran.find_one({"accID": str(accNo)})["tranID"]
     assets = bdb.transactions.get(asset_id=txid)[0]['asset']['data'][str(accNo)]
     print(assets)
     data = json.loads(assets)
     response = jsonify(data)
+    # response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+@app.route('/get-all-transactions', methods=['GET'])
+@cross_origin(origins="*", supports_credentials=True,)
+def get_all_transactions():
+    result = {}
+    accTranData = list(accTran.find())
+    for data in accTranData:
+        accNo = data["accID"]
+        txid = accTran.find_one({"accID": str(accNo)})["tranID"]
+        assets = bdb.transactions.get(asset_id=txid)[0]['asset']['data'][str(accNo)]
+        result[accNo] = assets
+
+
+    
+    # txid = accTran.find_one({"accID": str(accNo)})["tranID"]
+    # assets = bdb.transactions.get(asset_id=txid)[0]['asset']['data'][str(accNo)]
+    # print(assets)
+    # data = json.loads(assets)
+    response = jsonify(result)
     # response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 

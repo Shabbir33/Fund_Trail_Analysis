@@ -2,6 +2,8 @@ import React from "react";
 
 import { Navbar, NavItem, Nav } from "reactstrap";
 import store from "../stores/store";
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 const NavbarComp = () => {
   const Store = store();
@@ -15,6 +17,7 @@ const NavbarComp = () => {
   const icon = navOpen ? "⬅️" : "➡️";
 
   return (
+    <div>
     <Navbar color="light">
       <Nav>
         <NavItem
@@ -28,6 +31,14 @@ const NavbarComp = () => {
           {icon}
         </NavItem>
       </Nav>
+      <Nav>
+        <NavItem
+          className="mx-1"
+          style={{ cursor: "pointer" }}
+        >
+          <Link to={"/graph"}>Fund Trail</Link>
+        </NavItem>
+      </Nav>
       <Nav className="text-muted">
         <NavItem className="mx-1">NavOpen: {JSON.stringify(navOpen)}</NavItem>
         <NavItem className="mx-1">
@@ -38,6 +49,7 @@ const NavbarComp = () => {
         </NavItem>
       </Nav>
     </Navbar>
+    </div>
   );
 };
 
