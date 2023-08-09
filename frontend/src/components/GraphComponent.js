@@ -68,17 +68,17 @@ const GraphComponent = (acc) => {
 
     console.log(groupedData);
 
-    const edgeData = []
+    const edgeData = [];
     Object.keys(groupedData).forEach(function (key, index) {
-      const [from, to] = key.split(",")
-      console.log(from, to)
+      const [from, to] = key.split(",");
+      console.log(from, to);
       edgeData.push({
-        id: `${from} -> ${to} : ${groupedData[key]}`,
-        from:parseInt(from),
-        to:parseInt(to),
-      })
-    })
-    console.log(edgeData)
+        id: `${from} --> ${to} : ${groupedData[key]}`,
+        from: parseInt(from),
+        to: parseInt(to),
+      });
+    });
+    console.log(edgeData);
 
     data = {
       nodes: outputArray.map((accNo) => {
@@ -173,6 +173,7 @@ const GraphComponent = (acc) => {
 
   return (
     <div>
+      <h2>Fund Flow Network</h2>
       <Graph
         key={uuidv4()}
         graph={data}
@@ -182,13 +183,36 @@ const GraphComponent = (acc) => {
         //   //  if you want access to vis.js network api you can set the state in a parent component using this property
         // }}
       />
-      {selectedEdge && (
-        <div className="edge-popup">
-          <h2>Edge Details</h2>
-          <p>Edge ID: {selectedEdge}</p>
-          <button onClick={() => setSelectedEdge(null)}>Close</button>
-        </div>
-      )}
+      <div className="edge-popup">
+        {selectedEdge &&
+        // <p>{(selectedEdge
+        // .split(":")[1])
+        // .split(",").map((id) => {
+        //   return <p>{id}</p>
+        // })}</p>
+          (selectedEdge
+            .split(":")[1])
+            .split(",")
+            .map((ID) => {
+              return tranData.map((tran) => {
+                if (tran.tranID === ID) {
+                  return (
+                    <>
+                      <h2>Transaction Details</h2>
+                      <p>Transaction ID: {tran.tranID}</p>
+                      <p>Account Number: {tran.accountNo}</p>
+                      <p>Second Account Number: {tran.secAccountNo}</p>
+                      <p>Amount: {tran.amount}</p>
+                      {/* <button onClick={() => setSelectedEdge(null)}>Close</button> */}
+                    </>
+                  );
+                }
+                return
+              });
+            }
+            )
+        }
+      </div>
     </div>
   );
 };

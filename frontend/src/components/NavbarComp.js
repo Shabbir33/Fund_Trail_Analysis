@@ -16,41 +16,44 @@ const NavbarComp = () => {
 
   const icon = navOpen ? "⬅️" : "➡️";
 
-  return (
-    <div>
-    <Navbar color="light">
-      <Nav>
-        <NavItem
-          className="mx-1"
-          onClick={() => {
-            setNavOpen(!navOpen)
-            console.log("Clicked")
-        }}
-          style={{ cursor: "pointer" }}
-        >
-          {icon}
-        </NavItem>
-      </Nav>
-      <Nav>
-        <NavItem
-          className="mx-1"
-          style={{ cursor: "pointer" }}
-        >
-          <Link to={"/graph"}>Fund Trail</Link>
-        </NavItem>
-      </Nav>
-      <Nav className="text-muted">
-        <NavItem className="mx-1">NavOpen: {JSON.stringify(navOpen)}</NavItem>
-        <NavItem className="mx-1">
-          NavDocked: {JSON.stringify(navDocked)}
-        </NavItem>
-        <NavItem className="mx-1">
-          NavAnimate: {JSON.stringify(navAnimate)}
-        </NavItem>
-      </Nav>
-    </Navbar>
-    </div>
-  );
+  if (Store.navbar === true || Store.navbar === null) {
+    return (
+      <div>
+        <Navbar color="light" style={{paddingBottom: "0px", paddingTop: "0px"}}>
+          <Nav>
+            <NavItem
+              className="mx-1"
+              onClick={() => {
+                setNavOpen(!navOpen);
+                console.log("Clicked");
+              }}
+              style={{ cursor: "pointer" , fontSize:"50px", alignItems: "start"}}
+            >
+              {icon}
+            </NavItem>
+          </Nav>
+          <Nav>
+            <NavItem className="mx-1" style={{ cursor: "pointer" }}>
+              <Link to={"/graph"}>Fund Trail</Link>
+            </NavItem>
+          </Nav>
+          {/* <Nav className="text-muted">
+            <NavItem className="mx-1">
+              NavOpen: {JSON.stringify(navOpen)}
+            </NavItem>
+            <NavItem className="mx-1">
+              NavDocked: {JSON.stringify(navDocked)}
+            </NavItem>
+            <NavItem className="mx-1">
+              NavAnimate: {JSON.stringify(navAnimate)}
+            </NavItem>
+          </Nav> */}
+        </Navbar>
+      </div>
+    );
+  }else{
+    return (<div></div>)
+  }
 };
 
 export default NavbarComp;

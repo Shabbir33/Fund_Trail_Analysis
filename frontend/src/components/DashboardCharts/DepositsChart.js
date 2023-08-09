@@ -18,7 +18,7 @@ const DepositsChart = ({accNo}) => {
   useEffect(() => {
     Store.getDeposits(accNo);
     Store.getTransactions(accNo);
-  }, []);
+  }, [accNo]);
 
   if (data === undefined || data.deposits === null || graphTranData === undefined) {
     // console.log()

@@ -14,6 +14,7 @@ import JointGraph from "./components/JointGraph";
 import DepositsChart from "./components/DashboardCharts/DepositsChart";
 import WithdrawalsChart from "./components/DashboardCharts/WithdrawalsChart";
 import BalanceChart from "./components/DashboardCharts/BalanceChart";
+import LoginPage from "./components/LoginPage";
 
 Chart.register(CategoryScale);
 
@@ -28,7 +29,8 @@ function App() {
           <SideBarTwo>
             <NavbarComp />
             <Routes>
-              <Route index element={<UploadData />} />
+              <Route index element={<LoginPage />} />
+              <Route path="/home" element={<UploadData />} />
               <Route path="/dashboard/:accNo" element={<Dashboard />} />
               {/* <Route path="/graph/:acc" element={<GraphComponent />} /> */}
               <Route path="/graph" element={<JointGraph />} />

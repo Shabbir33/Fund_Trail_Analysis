@@ -18,7 +18,7 @@ const BalanceChart = ({accNo}) => {
   useEffect(() => {
     Store.getBalance(accNo);
     Store.getTransactions(accNo);
-  }, []);
+  }, [accNo]);
 
   if (data === undefined || data.balance === null || graphTranData === undefined) {
     // console.log()
@@ -38,16 +38,18 @@ const BalanceChart = ({accNo}) => {
     // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
     datasets: [
       {
-        label: "Deposits",
+        label: "Balance",
         data: Object.values(balance),
         // you can set indiviual colors for each bar
-        // backgroundColor: colorArr(Object.keys(deposits), fraudDepositID),
+        backgroundColor: Object.keys(balance).map((bal) => {
+            return 'rgba(255, 0, 0, 0.8)'
+        }),
         // [
         //     'rgba(255, 255, 255, 0.6)',
         //     'rgba(255, 255, 255, 0.6)',
         //     'rgba(255, 255, 255, 0.6)'
         // ],
-        borderWidth: 1,
+        borderWidth: 8,
       },
     ],
   };
@@ -66,7 +68,7 @@ const BalanceChart = ({accNo}) => {
   return (
     <div>
       <div className="graph">
-        <h2>Graph for Deposits per Transaction ID</h2>
+        <h2>Graph for Balance per Transaction ID</h2>
         <LineChart
             data={chartBalance}
             chartRef={chartRefLineBalance}

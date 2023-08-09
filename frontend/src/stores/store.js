@@ -11,6 +11,12 @@ const store = create((set) => ({
 
   allTransactions: [],
 
+  navbar: null,
+
+  setNavbar: (val) => {
+    set({navbar: val})
+  },
+
   //Navbar
   navAnimate: false,
   navOpen: false,

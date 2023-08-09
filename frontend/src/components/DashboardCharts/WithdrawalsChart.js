@@ -18,7 +18,7 @@ const WithdrawalsChart = ({accNo}) => {
   useEffect(() => {
     Store.getWithdrawals(accNo);
     Store.getTransactions(accNo);
-  }, []);
+  }, [accNo]);
 
   if (data === undefined || data.withdrawals === null || graphTranData === undefined) {
     // console.log()

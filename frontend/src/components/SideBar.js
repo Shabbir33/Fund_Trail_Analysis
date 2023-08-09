@@ -30,7 +30,7 @@ const SideBar = () => {
             >
             {accNos.length > 0 ? accNos.map((accNo) => {
                 return(
-                    <MenuItem component={<Link to={`/dashboard/${accNo}`} />} >Account {accNo}</MenuItem>
+                    <MenuItem style={{height:"20px"}} component={<Link to={`/dashboard/${accNo}`} />} >Account {accNo}</MenuItem>
                 )
             }):<></>}
             </Menu>

@@ -336,7 +336,7 @@ def hello():
 @cross_origin(origins="*", supports_credentials=True)
 def csv_handler():
     csv = 'financial_data.csv'
-    execute(csv)
+    # execute(csv)
     f = request.files['file']
     fname = f.filename 
     f.save(f.filename)
